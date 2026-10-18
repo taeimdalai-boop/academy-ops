@@ -1,0 +1,38 @@
+{
+  "month": "2026-09",
+  "employees": {
+    "T01": {
+      "gross": 1760000,
+      "deductions": 0,
+      "net": 1760000
+    },
+    "T02": {
+      "gross": 868000,
+      "deductions": 0,
+      "net": 868000
+    },
+    "T03": {
+      "gross": 644000,
+      "deductions": 100000,
+      "net": 544000
+    },
+    "T04": {
+      "blocked": true
+    },
+    "A01": {
+      "gross": 2500000,
+      "deductions": 0,
+      "net": 2500000
+    },
+    "A02": {
+      "gross": 1199000,
+      "deductions": 0,
+      "net": 1199000
+    }
+  },
+  "totals": {
+    "gross": 6971000,
+    "deductions": 100000,
+    "net": 6871000
+  }
+}
