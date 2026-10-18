@@ -27,7 +27,8 @@ class PayrollInput:
 
 def build_inputs(contracts, attendance, teaching_lines, allowances_path, year, month):
     inputs, issues = [], []
-    for line in teaching_lines:
+    order = {REGULAR: 0, MAKEUP: 1, SUBSTITUTE: 2}
+    for line in sorted(teaching_lines, key=lambda l: (l.employee_id, order[l.kind])):
         if contracts[line.employee_id].pay_type != "시수제":
             issues.append(Issue(DATA, line.employee_id, None, f"시수제가 아닌 직원에게 수업 시수가 있어 제외: {line.basis}"))
             continue

@@ -26,6 +26,12 @@ class MonthlyAttendance:
     days: list = field(default_factory=list)
     work_minutes: int = 0
     late_days: list = field(default_factory=list)
+    long_days: list = field(default_factory=list)   # (날짜, 근무분)
+
+
+def hm(minutes: int) -> str:
+    h, m = divmod(minutes, 60)
+    return f"{h}시간 {m}분" if m else f"{h}시간"
 
 
 def _to_time(v) -> time:
@@ -95,15 +101,21 @@ def summarize_month(events, corrections_path, contracts, policy, year, month):
                 missing = "퇴근" if check_in else "출근"
                 issues.append(Issue(DATA, emp, d, f"{missing} 기록 없음 — 근무시간 0으로 계산, 보정 파일에 추가 필요"))
                 note = f"{missing} 누락"
-        if work > policy.max_daily_hours * 60:
-            issues.append(Issue(LEGAL, emp, d, f"하루 8시간 초과 근무({work / 60:g}시간) — 연장 가산수당은 계산하지 않음"))
         m = result.setdefault(emp, MonthlyAttendance(emp))
+        if work > policy.max_daily_hours * 60:
+            m.long_days.append((d, work))
         m.days.append(DailyRecord(d, check_in, check_out, brk, work, note))
         m.work_minutes += work
         if c.pay_type == "월급제" and check_in and check_in.time() > policy.late_after:
             m.late_days.append(d)
 
     for emp, m in result.items():
+        if m.long_days:
+            days = ", ".join(f"{d.month}/{d.day}({hm(w)})" for d, w in m.long_days[:5])
+            more = f" 외 {len(m.long_days) - 5}일" if len(m.long_days) > 5 else ""
+            issues.append(Issue(LEGAL, emp, None,
+                                f"하루 {policy.max_daily_hours:g}시간 초과 {len(m.long_days)}일: {days}{more} — "
+                                "출근~퇴근 체류시간 기준(점심 휴게시간 규칙 미확정이라 차감 안 함), 연장 가산수당은 계산하지 않음"))
         if m.late_days:
             days = ", ".join(f"{d.month}/{d.day}" for d in m.late_days)
             issues.append(Issue(RULE, emp, None, f"지각 {len(m.late_days)}일({days}) — 월급제 지각 공제 규칙 미확정이라 공제하지 않음"))
