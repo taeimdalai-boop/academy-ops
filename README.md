@@ -11,7 +11,14 @@ python -m pytest -q
 
 결과(`out/2026-09/`): `급여계산표_2026-09.xlsx` · `명세서/*.pdf` · `메일초안/*.txt` · `확인필요_2026-09.md` · `run.json`
 
-- 설계서: `docs/superpowers/specs/2026-10-18-payroll-prototype-design.md`
+**급여대장 → 월급명세서 PDF** (워크플로우랩 더미):
+
+```bash
+python tools/make_payslip_samples.py samples/payslip/workflowlab
+python -m app.payslip.cli --ledger samples/payslip/workflowlab/급여대장_2026-09.xlsx --company samples/payslip/workflowlab/company.yaml --output out/payslips/2026-09
+```
+
+- 설계서: `docs/superpowers/specs/2026-10-18-payroll-prototype-design.md` · `docs/superpowers/specs/2026-10-18-payslip-ledger-design.md`
 - 구현 계획서: `docs/superpowers/plans/2026-10-18-payroll-prototype.md`
 - 스킬: `.claude/skills/payroll/SKILL.md` (`/payroll 2026-09`)
 

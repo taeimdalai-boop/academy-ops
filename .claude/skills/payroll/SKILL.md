@@ -44,6 +44,18 @@ python -m app.cli run --month YYYY-MM --input samples/YYYY-MM --output out/YYYY-
 4. 결과물 위치: 계산표 xlsx · `명세서/` · `메일초안/`
 5. 마지막 줄: "확정·발송은 원장님이 직접 해 주세요."
 
+## 3-1. 급여대장 → 월급명세서 PDF (실무 방식)
+
+원장님이 확정한 **급여대장 엑셀**(1행 = 직원 1명, 지급·공제 항목 열)이 있으면 그걸로 명세서를 만든다.
+
+```bash
+python -m app.payslip.cli --ledger <급여대장_YYYY-MM.xlsx> --company <company.yaml> --output out/payslips/YYYY-MM
+```
+
+- 결과: `pdf/<성명>_급여명세서_YYYY-MM.pdf`(실물 양식 A4 1장) · `mail/<사원번호>.eml`(PDF 첨부, 금액 없는 본문, **발송 안 함**) · `확인필요.md`
+- 종료 코드 2 = 합계 불일치 직원 있음(그 직원 PDF 없음) → 대장 확인 요청 · 3 = Edge 없음
+- 회사·로고·직인·문구·항목 순서는 `company.yaml`. 예시: `samples/payslip/workflowlab/`
+
 ## 4. 하지 않는 것
 
 - 메일·카카오·문자 발송 (초안만 만든다. 초안에 금액 없음)
