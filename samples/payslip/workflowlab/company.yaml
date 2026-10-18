@@ -1,0 +1,17 @@
+# 월급명세서 회사 설정 — 워크플로우랩 (과제 제출용 더미)
+name: 워크플로우랩
+name_en: WORKFLOW LAB
+business_no: 000-00-00000        # 더미
+ceo: 김태희 소장
+logo: ../../../assets/workflowlab/logo.png
+seal: ../../../assets/workflowlab/seal.png
+colors:
+  primary: "#1B2A4A"     # 네이비 (제목·라벨·실지급액 바)
+  accent: "#B8924A"      # 골드 (부제·아이콘)
+  head_text: "#3A4A6B"   # 표 머리글 글자
+thanks: 언제나 워크플로우랩과 함께 성장해 주셔서 감사합니다.
+contact: 급여 내역 확인 후 문의사항이 있으면 경영지원팀(admin@workflowlab.example)으로 연락 바랍니다.
+mail_from: 워크플로우랩 경영지원팀 <admin@workflowlab.example>
+# 명세서에 표시할 항목 = 급여대장 열 이름 (순서 그대로, 최대 10개씩)
+pay_items: [기본급, 식대, 자가운전보조금, 자녀보육수당, 교육훈련비, 생일축하금, 성과급]
+deduction_items: [근로소득세, 지방소득세, 국민연금, 건강보험, 장기요양, 고용보험, 국민연금 두루누리지원, 고용보험 두루누리지원, 사업소득세]
