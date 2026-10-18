@@ -1,0 +1,5 @@
+# 캡스 엑셀 열 이름 — 실제 내보내기 파일을 받으면 여기만 고친다 (현재는 가정값)
+columns:
+  employee_id: 사원번호
+  timestamp: 일시
+  mode: 모드
