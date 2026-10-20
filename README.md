@@ -11,6 +11,16 @@ python -m pytest -q
 
 결과(`out/2026-09/`): `급여계산표_2026-09.xlsx` · `명세서/*.pdf` · `메일초안/*.txt` · `확인필요_2026-09.md` · `run.json`
 
+**결과 대시보드** (계산 결과를 한 장으로 보는 화면):
+
+```bash
+python tools/make_dashboard.py out/2026-09 docs/index.html
+```
+
+`docs/index.html`은 `run.json`과 `확인필요_*.md`를 읽어 만든 **자체 완결 HTML 한 장**입니다.
+계산은 CLI가 하고 이 화면은 결과를 보여주기만 합니다 — 계산도 수정도 하지 않습니다.
+GitHub Pages를 `main` 브랜치의 `/docs`로 설정하면 그대로 공개됩니다.
+
 **급여대장 → 월급명세서 PDF** (워크플로우랩 더미):
 
 ```bash
