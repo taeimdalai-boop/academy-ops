@@ -1,11 +1,12 @@
 """메일 초안. 금액은 절대 넣지 않는다(PROJECT_SPEC 14.3) — 상세는 명세서·포털에서 확인. 발송하지 않음."""
 
 
-def write_mail_draft(path, statement, month, org="우리컴퓨터학원"):
+def write_mail_draft(path, statement, month, org=""):
     y, m = month.split("-")
+    tag = f"[{org}] " if org else ""
     body = (
         f"받는 사람: {statement.email}\n"
-        f"제목: [{org}] {int(y)}년 {int(m)}월 급여명세서 안내\n"
+        f"제목: {tag}{int(y)}년 {int(m)}월 급여명세서 안내\n"
         "\n"
         f"{statement.name} 선생님, 안녕하세요.\n"
         f"{int(m)}월 급여명세서가 준비되었습니다.\n"

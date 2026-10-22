@@ -16,6 +16,10 @@ from app.classes.teaching import compute_teaching
 from app.documents.issues_md import write_issues_md
 from app.documents.mail import write_mail_draft
 from app.documents.payslip import write_payslip
+from app.payslip.company import load_company
+from app.payslip.from_statement import build as build_slip
+from app.payslip.pdf import cleanup_profile, find_edge, html_to_pdf
+from app.payslip.render import render_html
 from app.documents.workbook import write_workbook
 from app.hr.contracts import load_contracts
 from app.issues import BLOCK
@@ -62,12 +66,17 @@ def run(month, input_dir, output_dir):
         assumptions.append("대체 수업 시급 = 대체 강사 본인 시급 (원장님 확인 전)")
     assumptions.append(f"1시수 = {policy.session_minutes}분, 원 단위 미만 {'절사' if policy.rounding == 'floor_won' else '반올림'}")
 
-    os.makedirs(os.path.join(output_dir, "명세서"), exist_ok=True)
+    company_path = p("company.yaml")
+    company = load_company(company_path) if os.path.exists(company_path) else None
+    org = company.name if company else ""
+
+    os.makedirs(os.path.join(output_dir, "계산근거"), exist_ok=True)
     os.makedirs(os.path.join(output_dir, "메일초안"), exist_ok=True)
     write_workbook(os.path.join(output_dir, f"급여계산표_{month}.xlsx"), statements, attendance, issues, blocked)
     for emp, s in statements.items():
-        write_payslip(os.path.join(output_dir, "명세서", f"{emp}_{month}.pdf"), s, month)
-        write_mail_draft(os.path.join(output_dir, "메일초안", f"{emp}.txt"), s, month)
+        write_payslip(os.path.join(output_dir, "계산근거", f"{emp}_{month}.pdf"), s, month, org)
+        write_mail_draft(os.path.join(output_dir, "메일초안", f"{emp}.txt"), s, month, org)
+    issues += _write_payslips(company, statements, contracts, month, output_dir)
     write_issues_md(os.path.join(output_dir, f"확인필요_{month}.md"), month, issues, assumptions)
 
     totals = {k: int(sum(getattr(s, k) for s in statements.values())) for k in ("gross", "deductions", "net")}
@@ -90,6 +99,34 @@ def run(month, input_dir, output_dir):
     print(f"결과: {output_dir}")
     return 2 if blocked else 0
 
+
+def _write_payslips(company, statements, contracts, month, output_dir):
+    """company.yaml이 있으면 실물 양식 명세서(HTML→PDF)를 만든다. 없으면 건너뛴다.
+
+    계산근거표(계산근거/)와 명세서(명세서/)는 쓰임이 다르다 —
+    앞은 금액이 어떻게 나왔는지 검산하는 내부 자료, 뒤는 직원에게 주는 문서다.
+    """
+    if company is None:
+        return []
+    out = os.path.join(output_dir, "명세서")
+    os.makedirs(os.path.join(out, "html"), exist_ok=True)
+    notes, edge = [], find_edge()
+    if not edge:
+        notes.append("Microsoft Edge를 찾지 못해 명세서 PDF를 만들지 못함 (HTML만 생성)")
+    for emp, st in statements.items():
+        slip, why = build_slip(st, contracts.get(emp), month, company.pay_day)
+        if slip is None:
+            notes.append(f"[{emp}] {why} → 명세서 만들지 않음")
+            continue
+        base = f"{st.name}_급여명세서_{month}"
+        html_path = os.path.join(out, "html", base + ".html")
+        with open(html_path, "w", encoding="utf-8") as f:
+            f.write(render_html(slip, company))
+        if edge:
+            html_to_pdf(html_path, os.path.join(out, base + ".pdf"), edge)
+    if edge:
+        cleanup_profile(out)
+    return notes
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="학원 급여 계산 프로토타입")

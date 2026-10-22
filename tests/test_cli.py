@@ -14,9 +14,18 @@ def test_cli_end_to_end(tmp_path):
     wb = load_workbook(tmp_path / "급여계산표_2026-09.xlsx")
     assert wb.sheetnames == ["요약", "명세항목", "근태집계", "확인필요"]
 
-    pdfs = sorted(os.listdir(tmp_path / "명세서"))
-    assert pdfs == ["A01_2026-09.pdf", "A02_2026-09.pdf", "T01_2026-09.pdf", "T02_2026-09.pdf", "T03_2026-09.pdf"]
-    assert all((tmp_path / "명세서" / p).stat().st_size > 2000 for p in pdfs)
+    # 계산근거 = 금액이 어떻게 나왔는지 검산하는 내부 자료(직원ID로 식별)
+    basis = sorted(os.listdir(tmp_path / "계산근거"))
+    assert basis == ["A01_2026-09.pdf", "A02_2026-09.pdf", "T01_2026-09.pdf", "T02_2026-09.pdf", "T03_2026-09.pdf"]
+    assert all((tmp_path / "계산근거" / p).stat().st_size > 2000 for p in basis)
+
+    # 명세서 = 직원에게 주는 문서(실물 양식, 성명으로 식별). company.yaml이 있을 때만 생성된다.
+    slips = sorted(f for f in os.listdir(tmp_path / "명세서") if f.endswith(".pdf"))
+    assert slips == ["강사A_급여명세서_2026-09.pdf", "강사B_급여명세서_2026-09.pdf", "강사C_급여명세서_2026-09.pdf",
+                     "행정A_급여명세서_2026-09.pdf", "행정B_급여명세서_2026-09.pdf"]
+    assert all((tmp_path / "명세서" / p).stat().st_size > 2000 for p in slips)
+    # 계산 중단된 T04(강사D)는 명세서를 만들지 않는다
+    assert not any("강사D" in f for f in slips)
 
     for f in os.listdir(tmp_path / "메일초안"):
         body = (tmp_path / "메일초안" / f).read_text(encoding="utf-8")

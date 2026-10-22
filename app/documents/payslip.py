@@ -23,7 +23,7 @@ def _fonts():
         _registered = True
 
 
-def write_payslip(path, statement, month, org="우리컴퓨터학원"):
+def write_payslip(path, statement, month, org=""):
     _fonts()
     navy = colors.HexColor("#1A3A5C")
     title = ParagraphStyle("t", fontName="MalgunBd", fontSize=16, textColor=navy, spaceAfter=4)
@@ -34,7 +34,7 @@ def write_payslip(path, statement, month, org="우리컴퓨터학원"):
     y, m = month.split("-")
     story = [
         Paragraph(f"{int(y)}년 {int(m)}월 급여명세서", title),
-        Paragraph(f"{org} · {statement.name} ({statement.employee_id})", body),
+        Paragraph(" · ".join(x for x in (org, f"{statement.name} ({statement.employee_id})") if x), body),
         Spacer(1, 6 * mm),
     ]
     rows = [["항목", "구분", "계산", "금액(원)", "근거"]]

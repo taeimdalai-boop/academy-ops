@@ -1,0 +1,19 @@
+# 명세서 회사 설정 — 가상 학원 (샘플 데이터 전용)
+# 이 파일이 있으면 app.cli run 이 「명세서」를 실물 양식으로 만든다. 없으면 계산근거표만 만든다.
+name: 한빛컴퓨터학원
+name_en: HANBIT ACADEMY
+business_no: 000-00-00000        # 더미
+ceo: 원장
+pay_day: 10              # 다음 달 10일 지급
+# logo / seal 은 선택 — 없으면 그 자리를 비우고 렌더한다.
+colors:
+  primary: "#1A3A5C"     # 네이비 (제목·라벨·실지급액)
+  accent: "#B8924A"      # 골드 (부제·아이콘)
+  head_text: "#3A4A6B"   # 표 머리글 글자
+thanks: 한 달 동안 수고 많으셨습니다.
+contact: 급여 내역 확인 후 문의사항이 있으면 행정실로 연락 바랍니다.
+mail_from: 한빛컴퓨터학원 행정실 <admin@example.com>
+# 아래 두 목록은 급여대장 경로(app.payslip.cli)에서 쓰는 고정 열 이름이다.
+# app.cli run 경로는 계산 결과에 실제로 있는 항목만 그린다.
+pay_items: [기본급, 근무수당, 정규 강의료, 보강 강의료, 대체 강의료, 인센티브, AI 지원금]
+deduction_items: [가불 상환]

@@ -25,6 +25,7 @@ class Company:
     mail_from: str
     pay_items: tuple
     deduction_items: tuple
+    pay_day: int = 0        # 다음 달 며칠에 지급하는지. 0이면 명세서에 지급일을 적지 않는다.
 
 
 def load_company(path) -> Company:
@@ -36,6 +37,10 @@ def load_company(path) -> Company:
         if len(items) > MAX_ROWS:
             raise InputError(f"company.yaml: {label} {len(items)}개 — 명세서 양식은 최대 {MAX_ROWS}행")
     c = raw["colors"]
+    def _asset(key):
+        v = raw.get(key)
+        return os.path.normpath(os.path.join(base, v)) if v else ""
+
     return Company(raw["name"], raw.get("name_en", ""), raw["business_no"], raw["ceo"],
-                   os.path.normpath(os.path.join(base, raw["logo"])), os.path.normpath(os.path.join(base, raw["seal"])),
-                   c["primary"], c["accent"], c["head_text"], raw["thanks"], raw["contact"], raw["mail_from"], pay, ded)
+                   _asset("logo"), _asset("seal"),
+                   c["primary"], c["accent"], c["head_text"], raw["thanks"], raw["contact"], raw["mail_from"], pay, ded, int(raw.get("pay_day", 0)))

@@ -7,8 +7,21 @@ ROW_H = 20.3   # 항목 행 높이(pt) — 실물 측정값
 
 
 def _img(path):
+    """로고·직인은 선택. 파일이 없으면 빈 문자열 — 자리만 비우고 렌더는 계속한다."""
+    if not path or not os.path.exists(path):
+        return ""
     with open(path, "rb") as f:
         return "data:image/png;base64," + base64.b64encode(f.read()).decode()
+
+
+def _logo_tag(c, e):
+    src = _img(c.logo_path)
+    return f'<img src="{src}" alt="{e(c.name)} 로고">' if src else ""
+
+
+def _seal_tag(c):
+    src = _img(c.seal_path)
+    return f'<img src="{src}" alt="직인">' if src else ""
 
 
 def _won(v):
@@ -93,7 +106,7 @@ body {{ font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; color: #11182
   <div class="title">월 급 명 세 서</div>
   <div class="sub">PAY STATEMENT</div>
   <div class="rule"></div>
-  <div class="logo"><img src="{_img(c.logo_path)}" alt="{e(c.name)} 로고"></div>
+  <div class="logo">{_logo_tag(c, e)}</div>
   <div class="cname">{e(c.name)}</div>
   <div class="cinfo" style="top:119pt">사업자등록번호</div>
   <div class="cinfo" style="top:134pt">{e(c.business_no)}</div>
@@ -108,5 +121,5 @@ body {{ font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; color: #11182
     <div class="itext"><p>{note}</p><p>{e(c.contact)}</p></div></div>
   <div class="thanks">{e(c.thanks)}</div>
   <div class="sign">{e(c.name)}</div>
-  <div class="seal"><img src="{_img(c.seal_path)}" alt="직인"></div>
+  <div class="seal">{_seal_tag(c)}</div>
 </div></body></html>"""
