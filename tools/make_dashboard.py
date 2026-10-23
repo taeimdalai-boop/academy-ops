@@ -11,6 +11,19 @@ from pathlib import Path
 
 NAVY, NAVY2, GOLD, INK = "#0a1128", "#101b3d", "#e8b64c", "#1a1a1a"
 
+# 평가자가 설치 없이 바로 열어볼 수 있는 실제 산출물. outputs/ 에 함께 배포한다.
+ARTIFACTS = [
+    ("명세서 — 강사A", "outputs/payslip_T01_2026-09.pdf", "직원에게 주는 문서 (A4 1장)"),
+    ("명세서 — 강사B", "outputs/payslip_T02_2026-09.pdf", ""),
+    ("명세서 — 강사C", "outputs/payslip_T03_2026-09.pdf", ""),
+    ("명세서 — 행정A", "outputs/payslip_A01_2026-09.pdf", ""),
+    ("명세서 — 행정B", "outputs/payslip_A02_2026-09.pdf", ""),
+    ("계산근거 — 강사A", "outputs/basis_T01_2026-09.pdf", "금액이 어떻게 나왔는지 검산하는 내부 자료"),
+    ("급여계산표", "outputs/payroll_2026-09.xlsx", "요약·명세항목·근태집계·확인필요 4시트"),
+    ("확인 필요 목록", "outputs/issues_2026-09.md", "사람에게 넘긴 항목 전문"),
+    ("실행 기록", "outputs/run.json", "입력 파일 해시·정책값·합계"),
+]
+
 
 LABELS = {
     "substitute_own": "대체 강사 본인 시급",
@@ -69,6 +82,14 @@ def build(out_dir: Path, dst: Path):
             f"<td class=stop colspan=3>계산 중단 — 명세서 미생성</td></tr>"
         )
 
+    artifact_html = "".join(
+        '<li><a href="{}"><span class=nm>{}</span>{}<span class=ex>{}</span></a></li>'.format(
+            href, html.escape(name),
+            f'<span class=ds>{html.escape(desc)}</span>' if desc else "",
+            href.rsplit(".", 1)[-1].upper())
+        for name, href, desc in ARTIFACTS
+    )
+
     issue_html = "".join(
         "<section class=issue><h3>{}</h3><ul>{}</ul></section>".format(
             html.escape(s["title"]),
@@ -109,6 +130,14 @@ tfoot td{{border-top:2px solid var(--navy);border-bottom:none;
 padding-top:12px;font-weight:700;font-size:15px;white-space:nowrap}}
 tfoot td.net{{color:var(--navy)}}
 .note{{margin:12px 0 0;font-size:13px;color:#666}}
+.files{{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}}
+.files li{{border-bottom:1px solid var(--line)}}
+.files a{{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;
+padding:10px 2px;text-decoration:none;color:var(--navy2)}}
+.files a:hover{{background:#fff}}
+.files .nm{{font-weight:700;font-size:14.5px}}
+.files .ds{{font-size:13px;color:#666}}
+.files .ex{{margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:#8a8a8a}}
 .issue{{margin:0 0 20px}}
 .issue h3{{font-size:14px;margin:0 0 7px;color:var(--navy2)}}
 .issue ul{{margin:0;padding-left:19px}}
@@ -143,6 +172,10 @@ code{{background:#eceff5;padding:1px 5px;border-radius:3px;font-size:13px}}
 
 <h2>확인 필요 {run.get('issue_count', 0)}건</h2>
 {issue_html}
+
+<h2>산출물 — 눌러서 바로 열기</h2>
+<ul class=files>{artifact_html}</ul>
+<p class=note>아래 파일은 위 계산을 실제로 돌려 나온 것이다. 모두 <strong>가상 샘플 데이터</strong>다.</p>
 
 <h2>적용한 정책값</h2>
 <dl>

@@ -1,0 +1,57 @@
+{
+  "month": "2026-09",
+  "status": "CALCULATED",
+  "run_at": "2026-10-23T08:34:24",
+  "inputs": {
+    "employees.xlsx": "b7f0cf9e075cd4a1",
+    "caps_events.xlsx": "9c60404083d1494d",
+    "schedule.xlsx": "60c272c9281a9d95",
+    "class_changes.xlsx": "577891c5c13c68d4",
+    "allowances.xlsx": "6a2c46ed5b634ff2",
+    "policy.yaml": "ec8b3074d3eef29b",
+    "attendance_corrections.xlsx": "288aa26a1fe719ac"
+  },
+  "policy": {
+    "min_hourly": "10320",
+    "substitute_rate": "substitute_own",
+    "rounding": "floor_won",
+    "session_minutes": 60
+  },
+  "employees": {
+    "A01": {
+      "gross": 2500000,
+      "deductions": 0,
+      "net": 2500000
+    },
+    "A02": {
+      "gross": 1199000,
+      "deductions": 0,
+      "net": 1199000
+    },
+    "T01": {
+      "gross": 1760000,
+      "deductions": 0,
+      "net": 1760000
+    },
+    "T02": {
+      "gross": 868000,
+      "deductions": 0,
+      "net": 868000
+    },
+    "T03": {
+      "gross": 644000,
+      "deductions": 100000,
+      "net": 544000
+    }
+  },
+  "blocked": [
+    "T04"
+  ],
+  "totals": {
+    "gross": 6971000,
+    "deductions": 100000,
+    "net": 6871000
+  },
+  "issue_count": 8,
+  "note": "CALCULATED = 계산만 완료. 확정·공개·지급은 사람이 한다."
+}

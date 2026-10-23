@@ -30,6 +30,14 @@ tfoot td{border-top:2px solid var(--navy);border-bottom:none;
 padding-top:12px;font-weight:700;font-size:15px;white-space:nowrap}
 tfoot td.net{color:var(--navy)}
 .note{margin:12px 0 0;font-size:13px;color:#666}
+.files{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.files li{border-bottom:1px solid var(--line)}
+.files a{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;
+padding:10px 2px;text-decoration:none;color:var(--navy2)}
+.files a:hover{background:#fff}
+.files .nm{font-weight:700;font-size:14.5px}
+.files .ds{font-size:13px;color:#666}
+.files .ex{margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:#8a8a8a}
 .issue{margin:0 0 20px}
 .issue h3{font-size:14px;margin:0 0 7px;color:var(--navy2)}
 .issue ul{margin:0;padding-left:19px}
@@ -46,7 +54,7 @@ code{background:#eceff5;padding:1px 5px;border-radius:3px;font-size:13px}
 <header><div class=wrap>
 <p class=kicker>ACADEMY-OPS · 급여 계산 엔진</p>
 <h1>2026-09 급여 계산 결과</h1>
-<p class=sub>실행 2026-10-23T07:37:10 · 상태 CALCULATED</p>
+<p class=sub>실행 2026-10-23T09:28:18 · 상태 CALCULATED</p>
 </div></header>
 <div class=wrap>
 
@@ -64,6 +72,10 @@ code{background:#eceff5;padding:1px 5px;border-radius:3px;font-size:13px}
 
 <h2>확인 필요 8건</h2>
 <section class=issue><h3>계산 중단 (1건)</h3><ul><li>[T04] 최저시급 미달: 시급 9,000원 &lt; 10,320원 — 명세서를 만들지 않음, 계약 확인 필요</li></ul></section><section class=issue><h3>데이터 이상 (3건)</h3><ul><li>[9999] 9/5 캡스 사원번호 9999가 직원 명부에 없어 기록 제외</li><li>[A02] 9/22 퇴근 기록 없음 — 근무시간 0으로 계산, 보정 파일에 추가 필요</li><li>변경 기록의 수업ID S999가 이번 달 시간표에 없어 반영하지 않음</li></ul></section><section class=issue><h3>규칙 미확정 (2건)</h3><ul><li>[A01] 지각 2일(9/3, 9/17) — 월급제 지각 공제 규칙 미확정이라 공제하지 않음</li><li>[T03] 9/10 대체 수업(S0910-T02) 시급을 &#x27;대체 강사 본인 시급&#x27;으로 계산함 — 원장님 확인 필요(인터뷰 C1)</li></ul></section><section class=issue><h3>법정 검토 (2건)</h3><ul><li>[A01] 하루 8시간 초과 22일: 9/1(9시간 10분), 9/2(9시간 10분), 9/3(8시간 48분), 9/4(9시간 10분), 9/7(9시간 10분) 외 17일 — 출근~퇴근 체류시간 기준(점심 휴게시간 규칙 미확정이라 차감 안 함), 연장 가산수당은 계산하지 않음</li><li>[A02] 하루 8시간 초과 1일: 9/29(9시간 30분) — 출근~퇴근 체류시간 기준(점심 휴게시간 규칙 미확정이라 차감 안 함), 연장 가산수당은 계산하지 않음</li></ul></section><section class=issue><h3>가정·미반영 사항</h3><ul><li>소득세·4대보험 공제는 계산하지 않음 (원장님 인터뷰 A5 이후 결정)</li><li>연장·휴일 가산수당, 주휴수당은 계산하지 않음 (법정 검토 필요)</li><li>최저시급 10,320원은 확인 전 값</li><li>대체 수업 시급 = 대체 강사 본인 시급 (원장님 확인 전)</li><li>1시수 = 60분, 원 단위 미만 절사</li></ul></section>
+
+<h2>산출물 — 눌러서 바로 열기</h2>
+<ul class=files><li><a href="outputs/payslip_T01_2026-09.pdf"><span class=nm>명세서 — 강사A</span><span class=ds>직원에게 주는 문서 (A4 1장)</span><span class=ex>PDF</span></a></li><li><a href="outputs/payslip_T02_2026-09.pdf"><span class=nm>명세서 — 강사B</span><span class=ex>PDF</span></a></li><li><a href="outputs/payslip_T03_2026-09.pdf"><span class=nm>명세서 — 강사C</span><span class=ex>PDF</span></a></li><li><a href="outputs/payslip_A01_2026-09.pdf"><span class=nm>명세서 — 행정A</span><span class=ex>PDF</span></a></li><li><a href="outputs/payslip_A02_2026-09.pdf"><span class=nm>명세서 — 행정B</span><span class=ex>PDF</span></a></li><li><a href="outputs/basis_T01_2026-09.pdf"><span class=nm>계산근거 — 강사A</span><span class=ds>금액이 어떻게 나왔는지 검산하는 내부 자료</span><span class=ex>PDF</span></a></li><li><a href="outputs/payroll_2026-09.xlsx"><span class=nm>급여계산표</span><span class=ds>요약·명세항목·근태집계·확인필요 4시트</span><span class=ex>XLSX</span></a></li><li><a href="outputs/issues_2026-09.md"><span class=nm>확인 필요 목록</span><span class=ds>사람에게 넘긴 항목 전문</span><span class=ex>MD</span></a></li><li><a href="outputs/run.json"><span class=nm>실행 기록</span><span class=ds>입력 파일 해시·정책값·합계</span><span class=ex>JSON</span></a></li></ul>
+<p class=note>아래 파일은 위 계산을 실제로 돌려 나온 것이다. 모두 <strong>가상 샘플 데이터</strong>다.</p>
 
 <h2>적용한 정책값</h2>
 <dl>

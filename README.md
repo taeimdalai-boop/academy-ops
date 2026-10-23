@@ -3,6 +3,9 @@
 학원 운영 SaaS(`D:\우리컴퓨터\근태관리\PROJECT_SPEC.md`)의 **급여 계산 엔진**을 먼저 검증하는 프로토타입입니다.
 가상 9월 데이터(강사 4·행정 2)로 동작합니다.
 
+**설치 없이 결과만 보기**: https://taeimdalai-boop.github.io/academy-ops/
+**Windows에서 직접 돌리기**: `실행하기.bat` 더블클릭 (자세한 안내는 `실행방법.txt`)
+
 ```bash
 python tools/make_samples.py samples/2026-09     # 가상 데이터 다시 만들기
 python -m app.cli run --month 2026-09 --input samples/2026-09 --output out/2026-09
